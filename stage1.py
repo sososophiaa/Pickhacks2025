@@ -46,7 +46,7 @@ def stage1_play(screen, font, pygame, stars, *current_screen):
     # Blit the lander in the center of the screen
     lander_x = (screen.get_width() - lander_image.get_width()) // 2
     lander_y = (screen.get_height() - lander_image.get_height()) // 2
-    screen.blit(lander_image, (lander_x, lander_y))
+    rocket_rect = screen.blit(lander_image, (lander_x, lander_y))
 
     # Blit the telescope slightly to the right of the lander
     telescope_x = (screen.get_width() - telescope_image.get_width()) // 2 + 400
@@ -77,7 +77,7 @@ def stage1_play(screen, font, pygame, stars, *current_screen):
 
             # Check if left arrow is clicked
             if left_arrow_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "stage3"  # Change screen to the previous screen
+                current_screen = "main"  # Change screen to the previous screen
                 print("Left Arrow Clicked! Moving to previous screen.")
 
             # Check if right arrow is clicked
@@ -87,6 +87,13 @@ def stage1_play(screen, font, pygame, stars, *current_screen):
 
             # Check if telescope is clicked
             if telescope_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "stage2"  # Change screen to stage 3
+                current_screen = "stage2"  # Change screen to stage 2
                 print("Telescope Clicked! Moving to stage 2.")
+
+            # Check if rocket is clicked
+            if rocket_rect.collidepoint(mouse_x, mouse_y):
+                current_screen = "stage3"  # Change screen to stage 3
+                stage3.stage3_play(screen, font, pygame,  current_screen)
+                print("Rocket Clicked! Moving to stage 3.")
+
                 
