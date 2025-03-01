@@ -1,7 +1,7 @@
 import pygame
 import random
 import math
-import stage1
+import stage1, stage2
 
 
 def main():
@@ -221,6 +221,10 @@ def run_game_setup():  # pygame setup
         elif current_screen == "stage1":
             # Stage 1 content here
             stage1.stage1_play(screen, font, pygame, stars, current_screen)
+
+        elif current_screen == "stage2":
+            # Stage 1 content here
+            stage2.stage2_play(screen, font, pygame, stars, current_screen)
 
         # Rocket movement logic
         if rocket_moving:
