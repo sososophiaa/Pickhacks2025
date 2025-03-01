@@ -146,6 +146,7 @@ while running:
             # Check if the play button (triangle) is clicked
             mouse_pos = pygame.mouse.get_pos()
 
+            hover_color = (0, 200, 0)
             # Check if the mouse click is within the triangle using a polygon-point-inclusion check
             def is_point_in_triangle(pt, v1, v2, v3):
                 x, y = pt
@@ -161,6 +162,8 @@ while running:
             if is_point_in_triangle(mouse_pos, *rotated_button_points):
                 # Start rocket movement when Play is clicked
                 rocket_moving = True  # Start moving the rocket
+                button_color = hover_color
+                border_color = (0, 150, 0)
 
             # Check if the mouse click is within the rectangle buttons
             if is_point_in_rect(mouse_pos, button_pos_left, button_width, button_height):
