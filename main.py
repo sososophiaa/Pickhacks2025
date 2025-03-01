@@ -8,7 +8,8 @@ def main():
     print("Hello, World!")
     run_game_setup()
 
-def run_game_setup(): # pygame setup
+
+def run_game_setup():  # pygame setup
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
     clock = pygame.time.Clock()
@@ -19,7 +20,8 @@ def run_game_setup(): # pygame setup
 
     # Generate stars (x, y, initial brightness)
     num_stars = 100
-    stars = [(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()), random.randint(100, 255)) for _ in range(num_stars)]
+    stars = [(random.randint(0, screen.get_width()), random.randint(0, screen.get_height()), random.randint(100, 255))
+             for _ in range(num_stars)]
 
     # Mars properties
     mars_radius = 120  # Increased Mars size
@@ -58,7 +60,7 @@ def run_game_setup(): # pygame setup
 
             # Check for overlap
             overlap = any(math.dist((cx, cy), (ox, oy)) < (radius + oradius) for ox, oy, oradius in craters)
-            
+
             if not overlap:  # If no overlap, accept this crater
                 craters.append((cx, cy, radius))
                 break  # Exit the loop once a valid spot is found
@@ -71,14 +73,17 @@ def run_game_setup(): # pygame setup
     # Play button properties (triangle button)
     button_size = 60  # Triangle size
     button_color = (0, 255, 0)  # Green color
+    button_color_hover = (0, 200, 0)  # Darker green when hovered
     border_color = (0, 100, 0)  # Dark green border
-    button_pos = (screen.get_width() // 2 + 10, screen.get_height() // 2)  # Center of the screen shifted by 10px on the x-axis
+    border_color_hover = (0, 150, 0)  # Darker border on hover
+    button_pos = (
+    screen.get_width() // 2 + 10, screen.get_height() // 2)  # Center of the screen shifted by 10px on the x-axis
 
     # Define the triangle's points
     button_points = [
         (button_pos[0], button_pos[1] - button_size),  # Top point
         (button_pos[0] - button_size, button_pos[1] + button_size),  # Bottom left
-        (button_pos[0] + button_size, button_pos[1] + button_size)   # Bottom right
+        (button_pos[0] + button_size, button_pos[1] + button_size)  # Bottom right
     ]
 
     # Function to rotate the triangle
@@ -103,7 +108,7 @@ def run_game_setup(): # pygame setup
     rotated_border_points = rotate_points(button_points, math.pi / 2, button_pos)
 
     # New screen state
-    current_screen = "main_menu" # Default to main menu screen
+    current_screen = "main_menu"  # Default to main menu screen
 
     # Font for "Play" text
     font = pygame.font.SysFont(None, 48)
@@ -142,28 +147,28 @@ def run_game_setup(): # pygame setup
         rect_x, rect_y = rect_pos
         return rect_x <= x <= rect_x + width and rect_y <= y <= rect_y + height
 
+    def is_point_in_triangle(pt, v1, v2, v3):
+        x, y = pt
+        x1, y1 = v1
+        x2, y2 = v2
+        x3, y3 = v3
+        denom = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3)
+        a = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denom
+        b = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denom
+        c = 1 - a - b
+        return a >= 0 and b >= 0 and c >= 0
+
     while running:
         # Poll for events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Check if the play button (triangle) is clicked
                 mouse_pos = pygame.mouse.get_pos()
 
                 # Check if the mouse click is within the triangle using a polygon-point-inclusion check
-                def is_point_in_triangle(pt, v1, v2, v3):
-                    x, y = pt
-                    x1, y1 = v1
-                    x2, y2 = v2
-                    x3, y3 = v3
-                    denom = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3)
-                    a = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) / denom
-                    b = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) / denom
-                    c = 1 - a - b
-                    return a >= 0 and b >= 0 and c >= 0
-
                 if is_point_in_triangle(mouse_pos, *rotated_button_points):
                     # Start rocket movement when Play is clicked
                     rocket_moving = True  # Start moving the rocket
@@ -188,11 +193,17 @@ def run_game_setup(): # pygame setup
         # Only draw play button on the main menu screen
         if current_screen == "main_menu":
             # Draw Mars (blitted so transparency works)
-            screen.blit(mars_surface, (player_pos.x - mars_center, player_pos.y - mars_center))  # Center Mars on player_pos
-            
-            # Draw the play button (only on the main menu screen)
-            pygame.draw.polygon(screen, border_color, rotated_border_points)  # Dark green border
-            pygame.draw.polygon(screen, button_color, rotated_button_points)  # Green play button
+            screen.blit(mars_surface,
+                        (player_pos.x - mars_center, player_pos.y - mars_center))  # Center Mars on player_pos
+
+            # Check if the mouse is hovering over the button
+            mouse_pos = pygame.mouse.get_pos()
+            if is_point_in_triangle(mouse_pos, *rotated_button_points):
+                pygame.draw.polygon(screen, border_color_hover, rotated_border_points)  # Hover border
+                pygame.draw.polygon(screen, button_color_hover, rotated_button_points)  # Hover button
+            else:
+                pygame.draw.polygon(screen, border_color, rotated_border_points)  # Default border
+                pygame.draw.polygon(screen, button_color, rotated_button_points)  # Default button
 
             # Draw the "Play" text in the center of the button
             text = font.render("Play", True, (0, 0, 0))  # Black text
@@ -200,8 +211,10 @@ def run_game_setup(): # pygame setup
             screen.blit(text, text_rect)
 
             # Draw the rectangle buttons below Mars
-            draw_rectangle_button_with_text(button_pos_left, button_width, button_height, button_color_left, "Instructions")
-            draw_rectangle_button_with_text(button_pos_right, button_width, button_height, button_color_right, "Credits")
+            draw_rectangle_button_with_text(button_pos_left, button_width, button_height, button_color_left,
+                                            "Instructions")
+            draw_rectangle_button_with_text(button_pos_right, button_width, button_height, button_color_right,
+                                            "Credits")
 
         elif current_screen == "stage1":
             # Stage 1 content here
