@@ -9,7 +9,7 @@ earth_image = pygame.image.load("earth.png")  # Load
 earth_image = pygame.transform.scale(earth_image, (400, 400))  # Resize if needed
 
 def stage2_play(screen, font, pygame, stars, current_screen):
-    
+    print("made it to stage 2 function")
     screen.fill("black")  # Fill with black
     
 

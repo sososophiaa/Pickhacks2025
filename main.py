@@ -3,9 +3,11 @@ import random
 import math
 import stage1, stage2
 
+current_screen = "main_menu"
 
 def main():
     print("Hello, World!")
+    global current_screen
     run_game_setup()
 
 
@@ -15,6 +17,7 @@ def run_game_setup():  # pygame setup
     clock = pygame.time.Clock()
     running = True
     dt = 0
+    global current_screen
 
     player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
@@ -107,8 +110,7 @@ def run_game_setup():  # pygame setup
     rotated_button_points = rotate_points(button_points, math.pi / 2, button_pos)
     rotated_border_points = rotate_points(button_points, math.pi / 2, button_pos)
 
-    # New screen state
-    current_screen = "main_menu"  # Default to main menu screen
+    
 
     # Font for "Play" text
     font = pygame.font.SysFont(None, 48)
@@ -223,7 +225,7 @@ def run_game_setup():  # pygame setup
 
         elif current_screen == "stage1":
             # Stage 1 content here
-            stage1.stage1_play(screen, font, pygame, stars, current_screen)
+            stage1.stage1_play(screen, font, pygame, stars)
 
         elif current_screen == "stage2":
             # Stage 1 content here
@@ -232,11 +234,13 @@ def run_game_setup():  # pygame setup
         #elif current_screen == "stage3":
             # Stage 1 content here
             #stage3.stage3_play(screen, font, pygame, stars, current_screen)
-
         # Rocket movement logic
-        if rocket_moving:
+        if rocket_moving and current_screen == "main_menu":
             # Move the rocket toward Mars (adjust position based on the speed and delta time)
             rocket_pos.x += rocket_speed * dt
+            rotated_rocket = pygame.transform.rotate(rocket_image, 135)  # Rotate counterclockwise
+            rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)  # Adjust position
+            screen.blit(rotated_rocket, rotated_rect)
 
             # Update rocket rect position
             rocket_rect.center = rocket_pos
@@ -244,15 +248,11 @@ def run_game_setup():  # pygame setup
             # If the rocket reaches the target position, transition to stage 1
             if ((rocket_pos.x >= screen.get_width() // 2 - mars_radius) and current_screen == "main_menu"):
                 rocket_moving = False  # Stop the rocket from moving
-                rocket_pos.x = +200
                 pygame.time.wait(1000)
                 current_screen = "stage1"  # Transition to stage 1 screen
 
         # Draw the rocket if it is moving
-        if rocket_moving:
-            rotated_rocket = pygame.transform.rotate(rocket_image, 135)  # Rotate counterclockwise
-            rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)  # Adjust position
-            screen.blit(rotated_rocket, rotated_rect)
+       
 
         # Flip display
         pygame.display.flip()

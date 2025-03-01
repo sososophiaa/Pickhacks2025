@@ -12,7 +12,8 @@ lander_image = pygame.transform.scale(lander_image, (400, 400))  # Resize if nee
 telescope_image = pygame.image.load("telescope.png")  # Load telescope
 telescope_image = pygame.transform.scale(telescope_image, (200, 200))  # Resize if needed
 
-def stage1_play(screen, font, pygame, stars, *current_screen):
+def stage1_play(screen, font, pygame, stars):
+    global current_screen
     screen.fill("black")  # Fill with black
 
     # Generate stars (x, y, initial brightness)
@@ -88,6 +89,7 @@ def stage1_play(screen, font, pygame, stars, *current_screen):
             if telescope_rect.collidepoint(mouse_x, mouse_y):
                 current_screen = "stage2"  # Change screen to stage 2
                 print("Telescope Clicked! Moving to stage 2.")
+                print(current_screen)
 
             # Check if rocket is clicked
             if rocket_rect.collidepoint(mouse_x, mouse_y):
