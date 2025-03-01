@@ -220,7 +220,7 @@ def run_game_setup():  # pygame setup
 
         elif current_screen == "stage1":
             # Stage 1 content here
-            stage1.stage1_play(screen, font, pygame, stars)
+            stage1.stage1_play(screen, font, pygame, stars, current_screen)
 
         # Rocket movement logic
         if rocket_moving:
