@@ -172,6 +172,7 @@ def run_game_setup():  # pygame setup
                 if is_point_in_triangle(mouse_pos, *rotated_button_points):
                     # Start rocket movement when Play is clicked
                     rocket_moving = True  # Start moving the rocket
+                    # HEREREWAREREALSDJFSJAFDSJALFDLS
 
                 # Check if the mouse click is within the rectangle buttons
                 if is_point_in_rect(mouse_pos, button_pos_left, button_width, button_height):
@@ -196,19 +197,20 @@ def run_game_setup():  # pygame setup
             screen.blit(mars_surface,
                         (player_pos.x - mars_center, player_pos.y - mars_center))  # Center Mars on player_pos
 
-            # Check if the mouse is hovering over the button
-            mouse_pos = pygame.mouse.get_pos()
-            if is_point_in_triangle(mouse_pos, *rotated_button_points):
-                pygame.draw.polygon(screen, border_color_hover, rotated_border_points)  # Hover border
-                pygame.draw.polygon(screen, button_color_hover, rotated_button_points)  # Hover button
-            else:
-                pygame.draw.polygon(screen, border_color, rotated_border_points)  # Default border
-                pygame.draw.polygon(screen, button_color, rotated_button_points)  # Default button
+            if rocket_moving == False:
+                # Check if the mouse is hovering over the button
+                mouse_pos = pygame.mouse.get_pos()
+                if is_point_in_triangle(mouse_pos, *rotated_button_points):
+                    pygame.draw.polygon(screen, border_color_hover, rotated_border_points)  # Hover border
+                    pygame.draw.polygon(screen, button_color_hover, rotated_button_points)  # Hover button
+                else:
+                    pygame.draw.polygon(screen, border_color, rotated_border_points)  # Default border
+                    pygame.draw.polygon(screen, button_color, rotated_button_points)  # Default button
 
-            # Draw the "Play" text in the center of the button
-            text = font.render("Play", True, (0, 0, 0))  # Black text
-            text_rect = text.get_rect(center=(button_pos[0] - 15, button_pos[1]))  # Position text at the button center
-            screen.blit(text, text_rect)
+                # Draw the "Play" text in the center of the button
+                text = font.render("Play", True, (0, 0, 0))  # Black text
+                text_rect = text.get_rect(center=(button_pos[0] - 15, button_pos[1]))  # Position text at the button center
+                screen.blit(text, text_rect)
 
             # Draw the rectangle buttons below Mars
             draw_rectangle_button_with_text(button_pos_left, button_width, button_height, button_color_left,
