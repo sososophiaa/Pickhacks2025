@@ -15,8 +15,7 @@ telescope_image = pygame.transform.scale(telescope_image, (200, 200))  # Resize 
 def stage1_play(screen, font, pygame, stars, current_screen):
     
     screen.fill("black")  # Fill with black
-    text = font.render("Stage 1", True, "white")
-    screen.blit(text, (screen.get_width() // 2 - text.get_width() // 2, screen.get_height() // 4))
+    
 
     # Generate stars (x, y, initial brightness)
     for i in range(len(stars)):
