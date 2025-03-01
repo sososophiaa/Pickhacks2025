@@ -1,5 +1,6 @@
 import random
 import pygame
+import stage3
 
 # Initialize Pygame
 pygame.init()
