@@ -159,6 +159,9 @@ def run_game_setup():  # pygame setup
         return a >= 0 and b >= 0 and c >= 0
 
     while running:
+        
+        print("Game stage:", current_screen)
+        
         # Poll for events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -226,6 +229,10 @@ def run_game_setup():  # pygame setup
             # Stage 1 content here
             stage2.stage2_play(screen, font, pygame, stars, current_screen)
 
+        #elif current_screen == "stage3":
+            # Stage 1 content here
+            #stage3.stage3_play(screen, font, pygame, stars, current_screen)
+
         # Rocket movement logic
         if rocket_moving:
             # Move the rocket toward Mars (adjust position based on the speed and delta time)
@@ -235,8 +242,9 @@ def run_game_setup():  # pygame setup
             rocket_rect.center = rocket_pos
 
             # If the rocket reaches the target position, transition to stage 1
-            if rocket_pos.x >= screen.get_width() // 2 - mars_radius:
+            if ((rocket_pos.x >= screen.get_width() // 2 - mars_radius) and current_screen == "main_menu"):
                 rocket_moving = False  # Stop the rocket from moving
+                rocket_pos.x = +200
                 pygame.time.wait(1000)
                 current_screen = "stage1"  # Transition to stage 1 screen
 

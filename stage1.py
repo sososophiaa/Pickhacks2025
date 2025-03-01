@@ -1,6 +1,5 @@
 import random
 import pygame
-import stage3
 
 # Initialize Pygame
 pygame.init()
@@ -93,7 +92,6 @@ def stage1_play(screen, font, pygame, stars, *current_screen):
             # Check if rocket is clicked
             if rocket_rect.collidepoint(mouse_x, mouse_y):
                 current_screen = "stage3"  # Change screen to stage 3
-                stage3.stage3_play(screen, font, pygame,  current_screen)
                 print("Rocket Clicked! Moving to stage 3.")
 
                 
