@@ -1,5 +1,7 @@
 import random
 import pygame
+import stage2
+
 
 # Initialize Pygame
 pygame.init()
@@ -12,8 +14,8 @@ lander_image = pygame.transform.scale(lander_image, (400, 400))  # Resize if nee
 telescope_image = pygame.image.load("telescope.png")  # Load telescope
 telescope_image = pygame.transform.scale(telescope_image, (200, 200))  # Resize if needed
 
-def stage1_play(screen, font, pygame, stars):
-    global current_screen
+
+def stage1_play(screen, font, pygame, stars, current_screen):
     screen.fill("black")  # Fill with black
 
     # Generate stars (x, y, initial brightness)
@@ -66,34 +68,37 @@ def stage1_play(screen, font, pygame, stars):
         (screen.get_width() - 100, screen.get_height() // 2 - 50),  # Top corner
         (screen.get_width() - 100, screen.get_height() // 2 + 50)  # Bottom corner
     ])
-    
+
+    go_to_screen = current_screen[0]  # Ensure it has a default value
+
     # Event handling for mouse clicks
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()  # Get mouse position
 
             # Check if left arrow is clicked
             if left_arrow_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "main"  # Change screen to the previous screen
+                go_to_screen = "main"  # Change screen to the previous screen
                 print("Left Arrow Clicked! Moving to previous screen.")
 
             # Check if right arrow is clicked
             if right_arrow_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "stage4"  # Change screen to the next screen
+                go_to_screen = "stage4"  # Change screen to the next screen
                 print("Right Arrow Clicked! Moving to next screen.")
 
             # Check if telescope is clicked
             if telescope_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "stage2"  # Change screen to stage 2
+                go_to_screen = "stage2"  # Change screen to stage 2
                 print("Telescope Clicked! Moving to stage 2.")
-                print(current_screen)
+                stage2.stage2_play(screen, font, pygame, stars, current_screen[0])
+                print(current_screen[0])
 
             # Check if rocket is clicked
             if rocket_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "stage3"  # Change screen to stage 3
+                go_to_screen = "stage3"  # Change screen to stage 3
                 print("Rocket Clicked! Moving to stage 3.")
-
-                
+            
+            current_screen[0] = go_to_screen  # Update the global variable
+            return go_to_screen

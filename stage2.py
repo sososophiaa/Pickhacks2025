@@ -44,5 +44,5 @@ def stage2_play(screen, font, pygame, stars, current_screen):
 
             # Check if right arrow is clicked
             if right_arrow_rect.collidepoint(mouse_x, mouse_y):
-                current_screen = "stage3"  # Change screen to the next screen
+                current_screen[0] = "stage3"  # Change screen to the next screen
                 print("Right Arrow Clicked! Moving to next screen.")

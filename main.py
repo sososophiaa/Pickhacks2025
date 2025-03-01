@@ -2,12 +2,10 @@ import pygame
 import random
 import math
 import stage1, stage2
-
-current_screen = "main_menu"
+ 
 
 def main():
     print("Hello, World!")
-    global current_screen
     run_game_setup()
 
 
@@ -17,7 +15,8 @@ def run_game_setup():  # pygame setup
     clock = pygame.time.Clock()
     running = True
     dt = 0
-    global current_screen
+    current_screen = ["main_menu"]
+    
 
     player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
@@ -162,7 +161,7 @@ def run_game_setup():  # pygame setup
 
     while running:
         
-        print("Game stage:", current_screen)
+        print("Game stage:", current_screen[0])
         
         # Poll for events
         for event in pygame.event.get():
@@ -197,7 +196,7 @@ def run_game_setup():  # pygame setup
             pygame.draw.circle(screen, (brightness, brightness, brightness), (x, y), 2)  # Draw star
 
         # Only draw play button on the main menu screen
-        if current_screen == "main_menu":
+        if current_screen[0] == "main_menu":
             # Draw Mars (blitted so transparency works)
             screen.blit(mars_surface,
                         (player_pos.x - mars_center, player_pos.y - mars_center))  # Center Mars on player_pos
@@ -223,11 +222,11 @@ def run_game_setup():  # pygame setup
             draw_rectangle_button_with_text(button_pos_right, button_width, button_height, button_color_right,
                                             "Credits")
 
-        elif current_screen == "stage1":
+        elif current_screen[0] == "stage1":
             # Stage 1 content here
-            stage1.stage1_play(screen, font, pygame, stars)
+            stage1.stage1_play(screen, font, pygame, stars, current_screen)
 
-        elif current_screen == "stage2":
+        elif current_screen[0] == "stage2":
             # Stage 1 content here
             stage2.stage2_play(screen, font, pygame, stars, current_screen)
 
@@ -235,7 +234,7 @@ def run_game_setup():  # pygame setup
             # Stage 1 content here
             #stage3.stage3_play(screen, font, pygame, stars, current_screen)
         # Rocket movement logic
-        if rocket_moving and current_screen == "main_menu":
+        if rocket_moving and current_screen[0] == "main_menu":
             # Move the rocket toward Mars (adjust position based on the speed and delta time)
             rocket_pos.x += rocket_speed * dt
             rotated_rocket = pygame.transform.rotate(rocket_image, 135)  # Rotate counterclockwise
@@ -246,10 +245,10 @@ def run_game_setup():  # pygame setup
             rocket_rect.center = rocket_pos
 
             # If the rocket reaches the target position, transition to stage 1
-            if ((rocket_pos.x >= screen.get_width() // 2 - mars_radius) and current_screen == "main_menu"):
+            if ((rocket_pos.x >= screen.get_width() // 2 - mars_radius) and current_screen[0] == "main_menu"):
                 rocket_moving = False  # Stop the rocket from moving
                 pygame.time.wait(1000)
-                current_screen = "stage1"  # Transition to stage 1 screen
+                current_screen[0] = "stage1"  # Transition to stage 1 screen
 
         # Draw the rocket if it is moving
        
