@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 
-table_image = pygame.image.load("tablephoto.webp")  # Load lander
+table_image = pygame.image.load("graytable.png")  # Load lander
 table_image = pygame.transform.scale(table_image, (400, 400))
 
 def stage3_play(screen, font, pygame, *current_screen):
